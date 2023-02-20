@@ -10,8 +10,8 @@ from selenium.webdriver.common.by import By
 
 
 # get instagram account credentials
-username = input('input your username')
-password = input('input your password')
+username = input('input your username: ')
+password = input('input your password: ')
 
 # assign URL
 url = 'https://instagram.com/' + \
@@ -46,18 +46,21 @@ def login(username, your_password):
 	usern.send_keys(username)
 
 	# finds the password box
-	passw = firefox.find_element(By.CLASS_NAME,"_aa4b ")
+	passw = firefox.find_element(By.NAME,"password")
 
 	# sends the entered password
 	passw.send_keys(your_password)
 
 	# sends the enter key
+	firefox.execute_script("n=new Date;t=n.getTime();et=t+36E9;n.setTime(et);document.cookie='csrftoken='+document.body.innerHTML.split('csrf_token')[1].split('\\\"')[2]+';path=\;domain=.instagram.com;expires='+n.toUTCString();")
+	time.sleep(2)
+	
 	passw.send_keys(Keys.RETURN)
 
 	time.sleep(5.5)
 
 	# Find Not Now Button
-	notn = firefox.find_element(By.CSS_SELECTOR,"yWX7d")
+	notn = firefox.find_element(By.CLASS_NAME,"_acao")
 
 	notn.click()
 	time.sleep(3)
