@@ -76,4 +76,4 @@ def download_post():
     print('finished')
 
 download_post()
-schedule.every().day.at(“19:00”).do(run_at_seven)
+schedule.every().day.at("19:00").do(download_post)
