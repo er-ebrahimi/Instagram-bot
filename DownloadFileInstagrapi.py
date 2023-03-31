@@ -3,6 +3,27 @@ import schedule
 import os
 import schedule
 import time
+
+class MyClient(Client):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.last_media_id = None
+
+    def user_medias(self, user_id, amount=12, last_media_id=None):
+        """
+        Get user medias
+        :param user_id: User ID
+        :param amount: Amount of medias to get
+        :param last_media_id: Last media ID
+        :return: List of Media
+        """
+        if last_media_id is None:
+            last_media_id = self.last_media_id
+        medias = self.user_medias_v1(user_id, amount, last_media_id)
+        if medias:
+            self.last_media_id = medias[-1].pk
+        return medias
+
 cl = Client()
 USERNAME = input('enter user name: ')
 PASSWORD = input('enter password: ')
