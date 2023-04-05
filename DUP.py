@@ -14,7 +14,8 @@ print("Current Directory:", current_dir)
 # Create a new folder
 new_folder_name = "tmp"
 new_folder_path = os.path.join(current_dir, new_folder_name)
-os.mkdir(new_folder_path)
+if not os.path.exists(path):
+    os.mkdir(new_folder_path)
 print("New folder created at:", new_folder_path)
 path = new_folder_path
 
