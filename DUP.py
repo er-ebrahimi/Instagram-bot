@@ -14,7 +14,7 @@ print("Current Directory:", current_dir)
 # Create a new folder
 new_folder_name = "tmp"
 new_folder_path = os.path.join(current_dir, new_folder_name)
-if not os.path.exists(path):
+if not os.path.exists(current_dir + "/" + new_folder_name):
     os.mkdir(new_folder_path)
 print("New folder created at:", new_folder_path)
 path = new_folder_path
@@ -25,6 +25,7 @@ path = new_folder_path
 
 # %%
 user_in_file = []
+print("in resources files:")
 for file in os.listdir("resources"):
     with open("resources/" + file, "rb") as file:
         users_new = pickle.load(file)
@@ -41,7 +42,7 @@ for file in os.listdir("resources"):
         print(f"adding {users_new[-1].username} to user_in_file")
 
 # %%
-user_in_file
+print(user_in_file)
 
 # %%
 def remove_file(input_path: list):
@@ -279,7 +280,9 @@ def run():
     remove_all()
 
 # %%
+print('in run file')
 run()
+print('out of run file')
 schedule.every().day.at("01:30").do(run)
 # Run the scheduled functions
 logging.info("start the scheduler")
