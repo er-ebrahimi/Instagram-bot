@@ -29,13 +29,6 @@ print("in resources files:")
 for file in os.listdir("resources"):
     with open("resources/" + file, "rb") as file:
         users_new = pickle.load(file)
-        # print(users_new)
-        # for user in users_new:
-        #     print(f'{user.username} {user.password} {user.client.media}')
-        #     if user not in user_in_file:
-        #         user_in_file.append(users_new)
-        #         logging.info(f'adding {user.username} to user_in_file')
-        #         # print(f"adding {user.username} to user_in_file")
         print(file)
         user_in_file.append(users_new[-1])
         logging.info(f'adding {users_new[-1].username} to user_in_file')
@@ -84,7 +77,7 @@ def remove_all():
     """
     try:
         for i in os.listdir(path):
-            os.remove(path + '\\' + i)
+            os.remove(path + '/' + i)
             print(f"removed {i}")
     except Exception as e:
         print(e)

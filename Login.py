@@ -8,9 +8,9 @@ import pickle
 from User import User
 
 # %% [markdown]
-# 1.at first read from file in user file 
-# 2.then start login in all the accounts
-# 3.Then get info of all the resources
+# 1.At first read from file in user file <br> 
+# 2.Then start login in all the accounts <br>
+# 3.Then get info of all the resources <br>
 # 4.Decrease one from all the user for uploading one media later
 
 # %%
@@ -62,7 +62,7 @@ def media_count():
 def write_file():
     for user in users:
         with open(f"./resources/{user.username}.pickle", "wb") as file:
-            pickle.dump(users, file)
+            pickle.dump(user, file)
             print(f"write_file is done for {user.username}")
 
 # %%
@@ -72,8 +72,6 @@ def remove_posts(user):
         print(f"post {post.pk} is going to be deleted")
         user.client.media_delete(post.pk)
         print(f"post {post.pk} deleted")
-# print(users[0].username)
-# remove_posts(users[0])
 
 # %%
 def removeResource(username: str, user_in_file: list):
