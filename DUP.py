@@ -268,6 +268,7 @@ def run():
                 posts = new_info.media_count - user._resourceInfoDic[resource].media_count 
                 download_post(user.client, new_info, path, 3 if posts  > 3 else posts)
                 user._resourceInfoDic[resource] = new_info
+                rewrite(user_in_file)
                 print(f"{resource} updated")
                 logging.info(f"{resource} updated")
             else:
@@ -275,7 +276,6 @@ def run():
                 logging.info(f"{resource} has no new media")
                 print(f"amount of media is {new_info.media_count}")
                 logging.info(f"amount of media is {new_info.media_count}")
-    rewrite(user_in_file)
     print('remove all files')
     remove_all()
 

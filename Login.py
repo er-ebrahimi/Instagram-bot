@@ -5,11 +5,15 @@ import os
 import schedule
 import time
 import pickle
-import import_ipynb
 from User import User
 
+# %% [markdown]
+# 1.at first read from file in user file 
+# 2.then start login in all the accounts
+# 3.Then get info of all the resources
+# 4.Decrease one from all the user for uploading one media later
+
 # %%
-file = input("Enter the file name: ")
 users = []
 def read_file(path: str):
     with open(path, 'r') as f:
@@ -21,40 +25,45 @@ def read_file(path: str):
             print(username.username , username.password , username.resourceUsernameList)
             users.append(username)
 
+    print(users[0].username , users[0].password , users[0].resourceUsernameList)
+    print(len(users))
         
-read_file(f"./users/{file}.txt")
-print(users[0].username , users[0].password , users[0].resourceUsernameList)
-print(len(users))
+
 
 # %%
-for user in users:
-    user.login()
-    print(f"login is done for {user.username}")
+def login():
+    for user in users:
+        user.login()
+        print(f"login is done for {user.username}")
 
 # %%
-for user in users:
-    try:
-        user.get_resourceInfoDic()
-        print(f"resourceInfoDic is done for {user.username}")
-    except Exception as e:
-        print(e , user.username)
-        continue
+def resourceInfoDic():
+    """_summary_: get information for each resource in resourceUsernameList
+    """
+    for user in users:
+        try:
+            user.get_resourceInfoDic()
+            print(f"resourceInfoDic is done for {user.username}")
+        except Exception as e:
+            print(e , user.username)
+            continue
 
 # %%
-test = Client()
-for user in users:
-    for info in user._resourceInfoDic:
-        user._resourceInfoDic[info].media_count = user._resourceInfoDic[info].media_count - 1
-        print(f"media count is done for {user.username}")
-        print(user._resourceInfoDic[info].media_count) 
+def media_count():
+    """decrease one media count for each user
+    """
+    for user in users:
+        for info in user._resourceInfoDic:
+            user._resourceInfoDic[info].media_count = user._resourceInfoDic[info].media_count - 1
+            print(f"media count is done for {user.username}")
+            print(user._resourceInfoDic[info].media_count) 
 
 # %%
-print(users[0]._resourceInfoDic)
-
-# %%
-for user in users:
-    with open(f"resources\{user.username}.pickle", "wb") as file:
-        pickle.dump(users, file)
+def write_file():
+    for user in users:
+        with open(f"./resources/{user.username}.pickle", "wb") as file:
+            pickle.dump(users, file)
+            print(f"write_file is done for {user.username}")
 
 # %%
 def remove_posts(user):
@@ -63,7 +72,67 @@ def remove_posts(user):
         print(f"post {post.pk} is going to be deleted")
         user.client.media_delete(post.pk)
         print(f"post {post.pk} deleted")
-print(users[0].username)
+# print(users[0].username)
 # remove_posts(users[0])
+
+# %%
+def removeResource(username: str, user_in_file: list):
+    """delete one of the resources from the resource list of the user
+
+    Args:
+        username (str): username of that resource
+    """
+    for user in user_in_file:
+        print(user)
+        for resource in user.resourceUsernameList:
+            print(resource)
+            if resource == username:
+                user.resourceUsernameList.remove(resource)
+                print(f"resource {username} is removed from {user.username}")
+                user.get_resourceInfoDic()
+                break
+
+# %% [markdown]
+# Read pickle file
+
+# %%
+def read_pickle():
+    user_in_file = []
+    print("in resources files:")
+    for file in os.listdir("resources"):
+        resource_path = os.path.join("resources", file)
+        with open(resource_path, "rb") as file:
+            users_new = pickle.load(file)
+            print(file)
+            user_in_file.append(users_new[-1])
+            print(f"adding {users_new[-1].username} to user_in_file")
+    return user_in_file
+
+# %%
+if __name__ == "__main__":
+    while True:
+        print("0. read file then login then get info then decrease media count then write file")
+        print("1. remove resource")
+        print("2. remove posts")
+        print("3. exit")
+        option = input("Enter the option: ")
+        if option == "0":
+            file = input("Enter the file name: ")
+            read_file(f"./users/{file}.txt")
+            login()
+            resourceInfoDic()
+            media_count()
+            write_file()
+        elif option == "1":
+            username = input("Enter the username: ")
+            user_in_file = read_pickle()
+            removeResource(username, user_in_file)
+        elif option == "2":
+            username = input("Enter the username: ")
+            for user in users:
+                if user.username == username:
+                    remove_posts(user)
+        elif option == "3":
+            break
 
 
