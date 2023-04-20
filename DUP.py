@@ -245,7 +245,7 @@ def rewrite(users_new):
         with open(f"resources\{user.username}.pickle", "wb") as file:
             print(f"rewriting {user.username}.pickle")
             logging.info(f"rewriting {user.username}.pickle")
-            pickle.dump(users_new, file)
+            pickle.dump(user, file)
             print(f"{user.username}.pickle rewritten")
             logging.info(f"{user.username}.pickle rewritten")
             file.close()
