@@ -15,11 +15,13 @@ from User import User
 
 # %%
 users = []
+user_in_file = []
 def read_file(path: str):
     with open(path, 'r') as f:
         lines = f.readlines()
         for line in lines:
             line = line.split(',')
+            line[-1] = line[-1].strip("\n")
             index = line[0].index(':')
             username = User(line[0][0:index],line[0][index+1:],line[1:])
             print(username.username , username.password , username.resourceUsernameList)
@@ -59,8 +61,8 @@ def media_count():
             print(user._resourceInfoDic[info].media_count) 
 
 # %%
-def write_file():
-    for user in users:
+def write_file(all_users):
+    for user in all_users:
         with open(f"./resources/{user.username}.pickle", "wb") as file:
             pickle.dump(user, file)
             print(f"write_file is done for {user.username}")
@@ -94,8 +96,12 @@ def removeResource(username: str, user_in_file: list):
 # Read pickle file
 
 # %%
-def read_pickle():
-    user_in_file = []
+def read_pickle(resources: str="resources"):
+    """_summary_: read pickle files and return a list of users
+
+    Returns:
+        resources: name of file that contains all the users
+    """
     print("in resources files:")
     for file in os.listdir("resources"):
         resource_path = os.path.join("resources", file)
@@ -112,7 +118,9 @@ if __name__ == "__main__":
         print("0. read file then login then get info then decrease media count then write file")
         print("1. remove resource")
         print("2. remove posts")
-        print("3. exit")
+        print("3. rewrite file")
+        print("4. print info")
+        print("5. exit")
         option = input("Enter the option: ")
         if option == "0":
             file = input("Enter the file name: ")
@@ -120,7 +128,7 @@ if __name__ == "__main__":
             login()
             resourceInfoDic()
             media_count()
-            write_file()
+            write_file(users)
         elif option == "1":
             username = input("Enter the username: ")
             user_in_file = read_pickle()
@@ -130,7 +138,21 @@ if __name__ == "__main__":
             for user in users:
                 if user.username == username:
                     remove_posts(user)
-        elif option == "3":
+        elif option == "3`":
+            ask = input("Do you want to Enter the file name: ")
+            if ask == "yes":
+                file = input("Enter the file name: ")
+                read_file(f"./users/{file}.txt")
+            else:
+                read_pickle()
+            write_file(user_in_file)
+        elif option == "4":
+            for user in user_in_file:
+                print(user.username)
+                for info in user._resourceInfoDic:
+                    print(info)
+                    print(user._resourceInfoDic[info].media_count)
+        elif option == "5":
             break
 
 

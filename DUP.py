@@ -25,14 +25,15 @@ path = new_folder_path
 
 # %%
 user_in_file = []
-print("in resources files:")
-for file in os.listdir("resources"):
-    with open("resources/" + file, "rb") as file:
+print("in all_resources files:")
+for file in os.listdir("all_resources"):
+    resource_path = os.path.join("all_resources", file)
+    with open(resource_path, "rb") as file:
         users_new = pickle.load(file)
         print(file)
-        user_in_file.append(users_new[-1])
-        logging.info(f'adding {users_new[-1].username} to user_in_file')
-        print(f"adding {users_new[-1].username} to user_in_file")
+        user_in_file.append(users_new)
+        logging.info(f'adding {users_new.username} to user_in_file')
+        print(f"adding {users_new.username} to user_in_file")
 
 # %%
 print(user_in_file)
@@ -242,7 +243,8 @@ def download_post(cl:Client, new_info, path, amount ,media_list = []):
 # %%
 def rewrite(users_new):
     for user in users_new:
-        with open(f"resources\{user.username}.pickle", "wb") as file:
+        resource_path = os.join.path("all_resources", f"{user.username}.pickle")
+        with open(resource_path, "wb") as file:
             print(f"rewriting {user.username}.pickle")
             logging.info(f"rewriting {user.username}.pickle")
             pickle.dump(user, file)
